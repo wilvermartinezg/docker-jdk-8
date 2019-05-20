@@ -1,10 +1,10 @@
 FROM ubuntu:18.04
 
-ADD files/apache-maven-3.6.0-bin.tar.gz /opt/maven
-ADD files/jdk-8u192-linux-x64.tar.gz /opt/java
+ADD files/apache-maven-3.6.1-bin.tar.gz /opt/maven
+ADD files/jdk-8u212-linux-x64.tar.gz /opt/java
 
-ENV JDK_VERSION="jdk1.8.0_192"
-ENV MAVEN_VERSION="apache-maven-3.6.0"
+ENV JDK_VERSION="jdk1.8.0_212"
+ENV MAVEN_VERSION="apache-maven-3.6.1"
 ENV JAVA_HOME="/opt/java/${JDK_VERSION}" MAVEN_HOME="/opt/maven/${MAVEN_VERSION}" HOME="/home/developer"  PATH="${PATH}:/home/developer:/opt/java/${JDK_VERSION}/bin:/opt/maven/${MAVEN_VERSION}/bin"
 
 RUN apt-get update \
@@ -24,6 +24,12 @@ RUN echo 'Creating user: developer' \
 	&& chmod 4755 /usr/bin/sudo
 
 RUN sudo chown developer:developer -R /home/developer
+
+RUN sudo dpkg --add-architecture i386 \
+	&& sudo apt update \
+	&& sudo apt install -y libgtk-3-0:i386 libidn11:i386 libglu1-mesa:i386 \
+	&& sudo apt install -y libxrender1 libxtst6 libxi6 \
+	&& sudo apt install -y libxrender1:i386 libxtst6:i386 libxi6:i386 libgtk2.0-0:i386
 
 RUN sudo update-alternatives --install "/usr/bin/java" "java" "/opt/java/$JDK_VERSION/bin/java" 1 \
 	&& sudo update-alternatives --install "/usr/bin/javac" "javac" "/opt/java/$JDK_VERSION/bin/javac" 1 \
