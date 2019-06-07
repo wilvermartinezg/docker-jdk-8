@@ -25,6 +25,7 @@ RUN echo 'Creating user: developer' \
 
 RUN sudo chown developer:developer -R /home/developer
 
+# interfaz grafica
 RUN sudo dpkg --add-architecture i386 \
 	&& sudo apt update \
 	&& sudo apt install -y libgtk-3-0:i386 libidn11:i386 libglu1-mesa:i386 \
